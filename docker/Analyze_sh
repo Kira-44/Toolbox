@@ -1,1 +1,39 @@
+#!/bin/bash
 
+REMOTE_USER="root"
+REMOTE_IP="10.8.0.6"
+REMOTE_PATH="/mnt/usb/logs"
+PRIVATE_KEY="/root/.ssh/squirrel_key"
+LOCAL_OUTPUT="/output"
+
+mkdir -p "$LOCAL_OUTPUT"
+
+while true; do
+    echo "[*] Récupération des fichiers .pcap et .txt depuis $REMOTE_IP"
+    
+    scp -i "$PRIVATE_KEY" -o StrictHostKeyChecking=no \
+        $REMOTE_USER@$REMOTE_IP:$REMOTE_PATH/*.{pcap,txt} "$LOCAL_OUTPUT/" 2>/dev/null
+
+    echo "[*] Analyse en cours..."
+
+    for PCAP in "$LOCAL_OUTPUT"/*.pcap; do
+        [ -e "$PCAP" ] || continue
+
+        BASENAME=$(basename "$PCAP" .pcap)
+
+        if [[ -f "$LOCAL_OUTPUT/${BASENAME}_report.txt" ]]; then
+            continue
+        fi
+
+        echo "[+] Analyse de $PCAP"
+
+        tshark -r "$PCAP" -q -z conv,tcp > "$LOCAL_OUTPUT/${BASENAME}_report.txt"
+        tshark -r "$PCAP" -Y "dns" > "$LOCAL_OUTPUT/${BASENAME}_dns.txt"
+        tshark -r "$PCAP" -Y "http.request" > "$LOCAL_OUTPUT/${BASENAME}_http.txt"
+        crackmapexec smb 192.168.1.0/24 > "$LOCAL_OUTPUT/${BASENAME}_cme.txt" 2>&1
+        txt2html "$LOCAL_OUTPUT/${BASENAME}_report.txt" > "$LOCAL_OUTPUT/${BASENAME}_report.html"
+    done
+
+    echo "[*] Pause de 3 minutes avant prochaine vérif."
+    sleep 180
+done
