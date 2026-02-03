@@ -1,37 +1,3 @@
-# Payload Library for the [Packet Squirrel](https://hak5.org/products/packet-squirrel) by [Hak5](https://hak5.org)More actions
-
-This repository contains payloads and extensions for the Hak5 Packet Squirrel and Hak5 Packet Squirrel Mark II.  Community developed payloads are listed and developers are encouraged to create pull requests to make changes to or submit new payloads.
-
-<div align="center">
-<img src="https://img.shields.io/github/forks/hak5/packetsquirrel-payloads?style=for-the-badge"/>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="https://img.shields.io/github/stars/hak5/packetsquirrel-payloads?style=for-the-badge"/>
-<br/>
-<img src="https://img.shields.io/github/commit-activity/y/hak5/packetsquirrel-payloads?style=for-the-badge">
-<img src="https://img.shields.io/github/contributors/hak5/packetsquirrel-payloads?style=for-the-badge">
-</div>
-<br/>
-<p align="center">
-<a href="https://payloadhub.com"><img src="https://cdn.shopify.com/s/files/1/0068/2142/files/payloadhub.png?v=1652474600"></a>
-<br/>
-<a href="https://hak5.org/blogs/payloads/tagged/packet-squirrel">View Featured Packet Squirrel Payloads and Leaderboard</a>
-<a href="https://payloadhub.com/blogs/payloads/tagged/packet-squirrel">View Featured Packet Squirrel Payloads and Leaderboard</a>
-<br/><i>Get your payload in front of thousands. Enter to win over $2,000 in prizes in the <a href="https://hak5.org/pages/payload-awards">Hak5 Payload Awards!</a></i>
-</p>
-
-
-<div align="center">
-<a href="https://hak5.org/discord"><img src="https://img.shields.io/discord/506629366659153951?label=Hak5%20Discord&style=for-the-badge"></a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="https://youtube.com/hak5"><img src="https://img.shields.io/youtube/channel/views/UC3s0BtrBJpwNDaflRSoiieQ?label=YouTube%20Views&style=for-the-badge"/></a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="https://youtube.com/hak5"><img src="https://img.shields.io/youtube/channel/subscribers/UC3s0BtrBJpwNDaflRSoiieQ?style=for-the-badge"/></a>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="https://twitter.com/hak5"><img src="https://img.shields.io/badge/follow-%40hak5-1DA1F2?logo=twitter&style=for-the-badge"/></a>
-<br/><br/>
-
-</div>
-
 # Packet Squirrel Versions 
 
 There are currently two versions of the Packet Squirrel.  The original Packet Squirrel can be identified by the micro-usb power port, while the Packet Squirrel Mark II can be identified by the USB-C power port.
