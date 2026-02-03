@@ -12,33 +12,6 @@ The Packet Squirrel Mark II expands the DuckyScript for Packet Squirrel commands
 
 The existing suite of original Packet Squirrel payloads remains available and functional on the original hardware in the `legacy-mk1/` directory!
 
-# Shop
-- [Purchase the Packet Squirrel](https://hak5.org/products/packet-squirrel "Purchase the Packet Squirrel")
-- [PayloadStudio Pro](https://hak5.org/products/payload-studio-pro "Purchase PayloadStudio Pro")
-- [Shop All Hak5 Tools](https://shop.hak5.org "Shop All Hak5 Tools")
-
-## Getting Started
-- [Build Payloads with PayloadStudio](#build-your-payloads-with-payloadstudio) | [QUICK START GUIDE](https://docs.hak5.org/packet-squirrel-mark-ii/payload-development/payload-development-basics "QUICK START GUIDE") 
-
-## Documentation / Learn More
--   [Documentation](https://docs.hak5.org/packet-squirrel-mark-ii "Documentation") 
-
-## Community
-*Got Questions? Need some help? Reach out:*
--  [Discord](https://hak5.org/discord/ "Discord") | [Forums](https://forums.hak5.org/forum/94-packet-squirrel/ "Forums")
-
-## Additional Links
-<b> Follow the creators </b><br/>
-<p >
-	<a href="https://twitter.com/notkorben">Korben's Twitter</a> | 
-	<a href="https://instagram.com/hak5korben">Korben's Instagram</a>
-<br/>
-	<a href="https://infosec.exchange/@kismetwireless">Dragorn's Mastodon</a> | 
-<br/>
-	<a href="https://twitter.com/hak5darren">Darren's Twitter</a> | 
-	<a href="https://instagram.com/hak5darren">Darren's Instagram</a>
-</p>
-
 <br/>
 <h1><a href="https://hak5.org/products/packet-squrirel">About the Packet Squrirel</a></h1>
 
